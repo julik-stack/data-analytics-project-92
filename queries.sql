@@ -48,6 +48,18 @@ order by average_income asc;
 
 6.3.
 
+select 
+	CONCAT(e.first_name, ' ', e.last_name) as seller,
+	TRIM(TO_CHAR(s.sale_date, 'day')) as day_of_week,
+	FLOOR(SUM(s.quantity * p.price)) as income
+from sales s
+join employees e 
+	on s.sales_person_id = e.employee_id
+join products p 
+	on s.product_id = p.product_id 
+group by seller, day_of_week, extract(isodow from s.sale_date)
+order by extract(isodow from s.sale_date), seller;
 
+-- превращаем дату в название дня (to_char), сортировка по номеру дня (extract(isodow from ...)
 
 

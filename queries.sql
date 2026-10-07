@@ -89,4 +89,34 @@ order by selling_month asc;
 
 --to_char вытягиевает из даты что нужно, distinct даст посчитать каждого покупателя 1 раз, sum дает выручку за месяц
 
+7.3.
+with t as(	
+	select 
+		c.customer_id,
+		CONCAT(c.first_name, ' ', c.last_name) as customer,
+		s.sale_date,
+		CONCAT(e.first_name, ' ', e.last_name) as seller,
+		p.price,
+		row_number() over (
+			partition by c.customer_id
+			order by s.sale_date, s.sales_id
+		)  as rn  
+	from sales s
+	join employees e 
+		on s.sales_person_id = e.employee_id
+	join products p 
+		on s.product_id = p.product_id
+	join customers c 
+		on s.customer_id = c.customer_id
+)
+select
+	customer,
+	sale_date,
+	seller 
+from t 
+where rn = 1
+	and price = 0
+order by customer_id;
+-- row_number нyмерует покупки, чтобы была возможность увидеть первую.  rn = 1 оставляет только первую и price = 0  выведет только продукт по акциит
+
 

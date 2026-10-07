@@ -19,7 +19,7 @@ group by seller
 order by income desc
 limit 10;
 
--- соединяем таблицы, собираем фамилию и имя вместе(CONCAT), считаем операции(count), считаем и округляем выручку(FLOOR(SUM)).
+-- отчет о десятке лучших продавцов
 
 6.2.
 with t as(
@@ -44,7 +44,7 @@ where avg_income < (
         ON s.product_id = p.product_id)
 order by average_income asc;
 
--- 	СТЕ на основе предыдузего запроса для удобства, поиск среднего, который ниже среднего.
+-- 	отчет содержит информацию о продавцах, чья средняя выручка за сделку меньше средней выручки за сделку по всем продавцам
 
 6.3.
 
@@ -60,7 +60,7 @@ join products p
 group by seller, day_of_week, extract(isodow from s.sale_date)
 order by extract(isodow from s.sale_date), seller;
 
--- превращаем дату в название дня (to_char), сортировка по номеру дня (extract(isodow from ...)
+-- отчет содержит информацию о выручке по дням недели
 
 7.1.
 
@@ -74,7 +74,7 @@ order by extract(isodow from s.sale_date), seller;
 from customers
 group by age_category 
 order by age_category ;
--- case делит по группам
+-- отчет - количество покупателей в разных возрастных группах
 
 7.2.
 select 
@@ -87,7 +87,7 @@ join products p
 group by selling_month 
 order by selling_month asc;
 
---to_char вытягиевает из даты что нужно, distinct даст посчитать каждого покупателя 1 раз, sum дает выручку за месяц
+--отчете предоставлены данные по количеству уникальных покупателей и выручке, которую они принесли
 
 7.3.
 with t as(	
@@ -117,6 +117,6 @@ from t
 where rn = 1
 	and price = 0
 order by customer_id;
--- row_number нyмерует покупки, чтобы была возможность увидеть первую.  rn = 1 оставляет только первую и price = 0  выведет только продукт по акциит
+-- отчет следует составлен о покупателях, первая покупка которых была в ходе проведения акций (акционные товары отпускали со стоимостью равной 0)
 
 

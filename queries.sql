@@ -76,6 +76,17 @@ group by age_category
 order by age_category ;
 -- case делит по группам
 
+7.2.
+select 
+	to_char(s.sale_date, 'YYYY-MM') as selling_month,
+	count(distinct s.customer_id) as total_customer,
+	floor(sum(s.quantity * p.price)) as income
+from sales s 
+join products p 
+	on s.product_id = p.product_id
+group by selling_month 
+order by selling_month asc;
 
+--to_char вытягиевает из даты что нужно, distinct даст посчитать каждого покупателя 1 раз, sum дает выручку за месяц
 
 

@@ -62,4 +62,20 @@ order by extract(isodow from s.sale_date), seller;
 
 -- превращаем дату в название дня (to_char), сортировка по номеру дня (extract(isodow from ...)
 
+7.1.
+
+	select 
+	case 
+		when age between 16 and 25 then '16-25'
+		when age between 26 and 40 then '26-40'
+		when age > 40 then '40+'
+	end  as age_category,
+	count(*) as age_count
+from customers
+group by age_category 
+order by age_category ;
+-- case делит по группам
+
+
+
 
